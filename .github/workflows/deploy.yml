@@ -9,6 +9,7 @@ jobs:
   deploy:
     name: Build and Deploy to EC2
     runs-on: ubuntu-latest
+    environment: Environment
 
     steps:
       - name: Checkout code
@@ -21,8 +22,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/{{ secrets.EC2_USER }}/prueba-aws
+            cd /home/ec2-user/prueba-aws
             git pull origin main
             docker compose down
-            docker compose build
             docker compose up -d
