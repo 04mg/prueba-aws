@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   pharmago-db:
@@ -21,7 +21,7 @@ services:
       - ConnectionStrings__DefaultConnection=Server=pharmago-db;Database=PharmaDb;User Id=sa;Password=Str0ngP@ssword!
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5000:80"      # API available on localhost:5000
+      - "5000:80" # API available on localhost:5000
     depends_on:
       - pharmago-db
       - otlp-collector
@@ -60,9 +60,11 @@ services:
       dockerfile: Dockerfile
     container_name: pharmago-ui
     ports:
-      - "4200:80"  # The Angular app will be available on localhost:4200
+      - "4200:80" # The Angular app will be available on localhost:4200
     depends_on:
       - pharmago-api
+    environment:
+      - NODE_OPTIONS=--max_old_space_size=1024
 
 volumes:
   sql_data:
