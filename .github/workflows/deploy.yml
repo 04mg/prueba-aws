@@ -22,7 +22,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/ec2-user/prueba-aws
+            cd /home/admin/prueba-aws
             git pull origin main
             docker compose down --volumes --remove-orphans
             docker system prune -af --volumes
