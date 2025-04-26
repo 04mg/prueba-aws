@@ -1,4 +1,4 @@
-name: EC2 Deploy
+name: Deploy to EC2
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Build and Deploy to EC2
+    name: Deploy to EC2
     runs-on: ubuntu-latest
     environment: Environment
 
@@ -25,4 +25,5 @@ jobs:
             cd /home/ec2-user/prueba-aws
             git pull origin main
             docker compose down --volumes --remove-orphans
-            docker compose up -d
+            docker system prune -af --volumes
+            docker compose up --build -d
