@@ -24,6 +24,5 @@ jobs:
           script: |
             cd /home/admin/prueba-aws
             git pull origin main
-            docker compose down --volumes --remove-orphans
-            docker system prune -af --volumes
+            docker compose down
             docker compose up --build -d
