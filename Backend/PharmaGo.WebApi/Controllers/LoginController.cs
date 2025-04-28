@@ -13,11 +13,11 @@ namespace PharmaGo.WebApi.Controllers
         private readonly ILoginManager _loginManager;
         private readonly ICustomMetrics _customMetrics;
 
-       public LoginController(ILoginManager manager, ICustomMetrics customMetrics)
-       {
+        public LoginController(ILoginManager manager, ICustomMetrics customMetrics)
+        {
             _loginManager = manager;
             _customMetrics = customMetrics;
-       }
+        }
 
         [HttpPost]
         public IActionResult Login([FromBody] LoginModelRequest userModel)
@@ -27,5 +27,10 @@ namespace PharmaGo.WebApi.Controllers
             return Ok(new LoginModelResponse() { token = authorization.Token, role = authorization.Role, userName = authorization.UserName });
         }
 
+        [HttpGet("hello")]
+        public IActionResult GetHello()
+        {
+            return Ok("Hello World");
+        }
     }
 }
