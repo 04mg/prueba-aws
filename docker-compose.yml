@@ -1,13 +1,12 @@
 version: "3.8"
 
 services:
-  pharmago-api:
+  web-api:
     build:
       context: ./Backend
       dockerfile: Dockerfile
-    container_name: pharmago-api
+    container_name: web-api
     environment:
-      - ConnectionStrings__DefaultConnection=Server=pharmago-db;Database=PharmaDb;User Id=sa;Password=Str0ngP@ssword!
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "80:80" # API available on localhost:5000

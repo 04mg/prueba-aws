@@ -1,21 +1,23 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR .
-
-COPY ["PharmaGo.WebApi/PharmaGo.WebApi.csproj", "PharmaGo.WebApi/"]
-COPY ["PharmaGo.Factory/PharmaGo.Factory.csproj", "PharmaGo.Factory/"]
-COPY ["PharmaGo.DataAccess/PharmaGo.DataAccess.csproj", "PharmaGo.DataAccess/"]
-RUN dotnet restore "PharmaGo.WebApi/PharmaGo.WebApi.csproj"
-
-COPY . .
-RUN dotnet publish "PharmaGo.WebApi/PharmaGo.WebApi.csproj" -c Release -o /app/publish
-
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER $APP_UID
 WORKDIR /app
-COPY --from=build /app/publish .
+EXPOSE 8080
+EXPOSE 8081
 
-EXPOSE 80
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["Api.csproj", "./"]
+RUN dotnet restore "Api.csproj"
+COPY . .
+WORKDIR "/src/"
+RUN dotnet build "Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-ENV ASPNETCORE_URLS=http://+:80
-ENV ASPNETCORE_ENVIRONMENT=Development
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-ENTRYPOINT ["dotnet", "PharmaGo.WebApi.dll"]
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Api.dll"]
