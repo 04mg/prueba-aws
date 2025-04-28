@@ -21,7 +21,7 @@ services:
       - ConnectionStrings__DefaultConnection=Server=pharmago-db;Database=PharmaDb;User Id=sa;Password=Str0ngP@ssword!
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5000:80" # API available on localhost:5000
+      - "80:80" # API available on localhost:5000
     depends_on:
       - pharmago-db
       - otlp-collector
